@@ -5,6 +5,7 @@ extern crate clap;
 extern crate futures;
 extern crate vmm;
 extern crate sys_util;
+extern crate libc;
 
 use std::rc::Rc;
 use std::sync::{Arc, RwLock};
@@ -22,6 +23,26 @@ use vmm::vmm_config::logger::{LoggerLevel, LoggerConfig};
 use sys_util::EventFd;
 
 fn main() {
+    if let Err(e) = vmm::setup_sigsys_handler() {
+        println!("Failed to register signal handler: {}", e);
+        std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
+    }
+
+    if let Err(e) = vmm::setup_sigsegv_handler() {
+        println!("Failed to register signal handler: {}", e);
+        std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
+    }
+
+    if let Err(e) = vmm::setup_sigrtmin_handler() {
+        println!("Failed to register signal handler: {}", e);
+        std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
+    }
+
+    if let Err(e) = vmm::setup_sigusr1_handler() {
+        println!("Failed to register signal handler: {}", e);
+        std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
+    }
+
     let cmd_arguments = App::new("firecracker")
         .version(crate_version!())
         .author(crate_authors!())
@@ -119,8 +140,8 @@ fn main() {
     println!("Configuration: {:?}", vmm.get_configuration().expect("config"));
 
     let log_config = LoggerConfig {
-        log_fifo: String::from("logs.fifo"),
-        metrics_fifo: String::from("metrics.fifo"),
+        log_fifo: String::from("logs"),
+        metrics_fifo: String::from("metrics"),
         level: LoggerLevel::Info,
         show_level: true,
         show_log_origin: true,
