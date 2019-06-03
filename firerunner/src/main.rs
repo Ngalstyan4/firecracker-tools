@@ -28,16 +28,6 @@ fn main() {
         std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
     }
 
-    if let Err(e) = vmm::setup_sigsegv_handler() {
-        println!("Failed to register signal handler: {}", e);
-        std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
-    }
-
-    if let Err(e) = vmm::setup_sigrtmin_handler() {
-        println!("Failed to register signal handler: {}", e);
-        std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
-    }
-
     if let Err(e) = vmm::setup_sigusr1_handler() {
         println!("Failed to register signal handler: {}", e);
         std::process::exit(i32::from(vmm::FC_EXIT_CODE_GENERIC_ERROR));
@@ -112,9 +102,6 @@ fn main() {
     let cmd_line = cmd_arguments.value_of("command line").unwrap().to_string();
     if cmd_arguments.is_present("from_file") {
         unsafe { vmm::FROM_FILE = true };
-        println!("load regs and sregs from regs_sregs");
-    } else {
-        println!("start from the beginning");
     }
 
     // It's safe to unwrap here because clap's been provided with a default value

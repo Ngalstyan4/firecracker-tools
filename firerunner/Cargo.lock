@@ -171,6 +171,7 @@ dependencies = [
 name = "kvm"
 version = "0.1.0"
 dependencies = [
+ "fc_util 0.1.0",
  "kvm-bindings 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.51 (registry+https://github.com/rust-lang/crates.io-index)",
  "sys_util 0.1.0",
