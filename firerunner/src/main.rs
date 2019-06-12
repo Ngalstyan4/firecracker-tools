@@ -46,6 +46,14 @@ fn main() {
                 .help("Whether load vcpu's regs and sregs from regs_sregs or not")
         )
         .arg(
+            Arg::with_name("dump")
+                .short("d")
+                .long("dump")
+                .takes_value(false)
+                .required(false)
+                .help("Whether load vcpu's regs and sregs from regs_sregs or not")
+        )
+        .arg(
             Arg::with_name("kernel")
                 .short("k")
                 .long("kernel")
@@ -102,6 +110,9 @@ fn main() {
     let cmd_line = cmd_arguments.value_of("command line").unwrap().to_string();
     if cmd_arguments.is_present("from_file") {
         unsafe { vmm::FROM_FILE = true };
+    }
+    if cmd_arguments.is_present("dump") {
+        unsafe { vmm::DUMP = true };
     }
 
     // It's safe to unwrap here because clap's been provided with a default value
