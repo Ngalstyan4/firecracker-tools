@@ -735,7 +735,7 @@ fn bindgen_test_layout_kvm_memory_alias() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_pic_state {
     pub last_irr: __u8,
     pub irr: __u8,
@@ -1945,7 +1945,7 @@ fn bindgen_test_layout_kvm_sregs() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_fpu {
     pub fpr: [[__u8; 16usize]; 8usize],
     pub fcw: __u16,
@@ -2903,7 +2903,7 @@ fn bindgen_test_layout_kvm_reinject_control() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_vcpu_events {
     pub exception: kvm_vcpu_events__bindgen_ty_1,
     pub interrupt: kvm_vcpu_events__bindgen_ty_2,
@@ -2916,7 +2916,7 @@ pub struct kvm_vcpu_events {
     pub exception_payload: __u64,
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_vcpu_events__bindgen_ty_1 {
     pub injected: __u8,
     pub nr: __u8,
@@ -3000,7 +3000,7 @@ fn bindgen_test_layout_kvm_vcpu_events__bindgen_ty_1() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_vcpu_events__bindgen_ty_2 {
     pub injected: __u8,
     pub nr: __u8,
@@ -3069,7 +3069,7 @@ fn bindgen_test_layout_kvm_vcpu_events__bindgen_ty_2() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_vcpu_events__bindgen_ty_3 {
     pub injected: __u8,
     pub pending: __u8,
@@ -3138,7 +3138,7 @@ fn bindgen_test_layout_kvm_vcpu_events__bindgen_ty_3() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_vcpu_events__bindgen_ty_4 {
     pub smm: __u8,
     pub pending: __u8,
@@ -7060,7 +7060,7 @@ fn bindgen_test_layout_kvm_vapic_addr() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_mp_state {
     pub mp_state: __u32,
 }
