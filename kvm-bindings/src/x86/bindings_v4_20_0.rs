@@ -5,7 +5,7 @@ extern crate serde;
 use serde::{Deserialize, Serialize};
 
 #[repr(C)]
-#[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Copy, Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize)]
 pub struct __BindgenBitfieldUnit<Storage, Align>
 where
     Storage: AsRef<[u8]> + AsMut<[u8]>,
@@ -949,7 +949,7 @@ pub union kvm_ioapic_state__bindgen_ty_1 {
     _bindgen_union_align: u64,
 }
 #[repr(C)]
-#[derive(Debug, Default, Copy, Clone, PartialEq)]
+#[derive(Debug, Default, Copy, Clone, PartialEq, Serialize, Deserialize)]
 pub struct kvm_ioapic_state__bindgen_ty_1__bindgen_ty_1 {
     pub vector: __u8,
     pub _bitfield_1: __BindgenBitfieldUnit<[u8; 2usize], u8>,
