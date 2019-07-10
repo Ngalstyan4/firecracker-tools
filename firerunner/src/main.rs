@@ -3,6 +3,7 @@ extern crate clap;
 extern crate futures;
 extern crate vmm;
 extern crate sys_util;
+extern crate serde_json;
 
 use std::rc::Rc;
 use std::sync::{Arc, RwLock};
@@ -17,6 +18,11 @@ use vmm::vmm_config::instance_info::{InstanceInfo, InstanceState};
 use vmm::vmm_config::boot_source::BootSourceConfig;
 use vmm::vmm_config::drive::BlockDeviceConfig;
 use sys_util::EventFd;
+
+use vmm::vmm_config::logger::LoggerConfig;
+use serde_json::Value;
+use vmm::vmm_config::logger::LoggerLevel;
+
 
 fn main() {
     let cmd_arguments = App::new("firecracker")
@@ -39,7 +45,8 @@ fn main() {
                 .value_name("CMD_LINE")
                 .takes_value(true)
                 .required(false)
-                .default_value("console=ttyS0 reboot=k panic=1 pci=off")
+                // .default_value("console=ttyS0 reboot=k panic=1 pci=off")
+                .default_value("panic=1 pci=off reboot=k tsc=reliable quiet 8250.nr_uarts=0 ipv6.disable=1")
                 .help("Command line to pass to the kernel")
         )
         .arg(
@@ -121,6 +128,8 @@ fn main() {
         boot_args: Some(cmd_line),
     };
     println!("{:?}", vmm.set_boot_source(boot_config).unwrap());
+    println!("Set Logger Config {:?}", vmm.set_logger_config().unwrap());
+
 
     let block_config = BlockDeviceConfig {
         drive_id: String::from("rootfs"),
@@ -156,6 +165,29 @@ impl VmmWrapper {
     fn set_boot_source(&mut self, config: BootSourceConfig) -> Result<VmmData, VmmActionError> {
         let (sync_sender, sync_receiver) = oneshot::channel();
         let req = VmmAction::ConfigureBootSource(config, sync_sender);
+        self.sender.send(Box::new(req)).map_err(|_| ()).expect("Couldn't send");
+        self.event_fd.write(1).map_err(|_| ()).expect("Failed to signal");
+        sync_receiver.map(|i| {
+            i
+        }).wait().unwrap()
+    }
+
+    fn set_logger_config(&mut self) -> Result<VmmData, VmmActionError> {
+        let (sync_sender, sync_receiver) = oneshot::channel();
+        
+        let log_file = "/home/ngalstyan/Desktop/hahaLOG_FILE.log";
+        let metrics_file = "/home/ngalstyan/Desktop/hahaLOG_FILE_METRICS.log";
+        let desc = LoggerConfig {
+            log_fifo: log_file.to_string(),
+            metrics_fifo: metrics_file.to_string(),
+            level: LoggerLevel::Debug,
+            show_level: true,
+            show_log_origin: true,
+            #[cfg(target_arch = "x86_64")]
+            options: Value::Array(vec![]),
+        };
+        
+        let req = VmmAction::ConfigureLogger(desc, sync_sender);
         self.sender.send(Box::new(req)).map_err(|_| ()).expect("Couldn't send");
         self.event_fd.write(1).map_err(|_| ()).expect("Failed to signal");
         sync_receiver.map(|i| {
