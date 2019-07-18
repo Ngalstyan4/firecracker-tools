@@ -1,0 +1,3 @@
+#!/bin/bash
+# src: https://unix.stackexchange.com/questions/87908/how-do-you-empty-the-buffers-and-cache-on-a-linux-system
+free && sync &&  sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'

@@ -45,7 +45,7 @@ fn main() {
                 .value_name("CMD_LINE")
                 .takes_value(true)
                 .required(false)
-                // .default_value("console=ttyS0 reboot=k panic=1 pci=off")
+                // .default_value("console=ttyS0 quiet reboot=k panic=1 pci=off")
                 .default_value("panic=1 pci=off reboot=k tsc=reliable quiet 8250.nr_uarts=0 ipv6.disable=1")
                 .help("Command line to pass to the kernel")
         )
@@ -180,7 +180,7 @@ impl VmmWrapper {
         let desc = LoggerConfig {
             log_fifo: log_file.to_string(),
             metrics_fifo: metrics_file.to_string(),
-            level: LoggerLevel::Debug,
+            level: LoggerLevel::Info,
             show_level: true,
             show_log_origin: true,
             #[cfg(target_arch = "x86_64")]

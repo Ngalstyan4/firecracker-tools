@@ -1,0 +1,2 @@
+#!/bin/bash
+awk '/.*Guest-section-time/{print $5 "\t" $6 } /.*Guest-boot-time/{print "Total_boot_time" "\t" $5 }'

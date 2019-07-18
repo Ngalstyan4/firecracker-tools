@@ -1,0 +1,2 @@
+#!/bin/bash
+RUST_BACKTRACE=1 ./firerunner --kernel  ~/Desktop/linux-4.14.72/vmlinux --rootfs ~/Desktop/kernels/ubuntu-rootfs.ext4 & cat ~/Desktop/hahaLOG_FILE.log >> ~/Desktop/bootlogs/console.ubuntu.$1.txt & sleep 7 && ./kill
